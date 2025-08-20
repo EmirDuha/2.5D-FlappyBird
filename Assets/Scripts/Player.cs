@@ -1,6 +1,8 @@
 using System;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEditor.ShaderGraph;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,6 +14,9 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
     public int point = 0;
+    private bool level1Completed = false;
+    private bool level2Completed = false;
+    private bool level3Completed = false;
 
     void Start()
     {
@@ -29,6 +34,24 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             jumpSound.Play();
+        }
+
+        if (SceneManager.GetActiveScene().name == "Level1")
+        {
+            if (level1Completed && Input.GetKeyDown(KeyCode.Space))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene("Level2");
+            }
+        }
+
+        if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            if (level2Completed && Input.GetKeyDown(KeyCode.Space))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene("Level3");
+            }
         }
     }
 
@@ -65,7 +88,6 @@ public class Player : MonoBehaviour
             }
 
             point = 0;
-            Debug.Log("Your Point: " + point);
         }
 
 
@@ -75,8 +97,26 @@ public class Player : MonoBehaviour
 
             if (point == 100)
             {
-                messageText.text = "Level Completed!";
-                messageText.color = Color.green;
+                if (SceneManager.GetActiveScene().name == "Level1")
+                {
+                    messageText.text = "Level Completed!\nPress Space to continue.";
+                    messageText.color = Color.green;
+                    level1Completed = true;
+                }
+
+                if (SceneManager.GetActiveScene().name == "Level2")
+                {
+                    messageText.text = "Level Completed!\nPress Space to continue.";
+                    messageText.color = Color.green;
+                    level2Completed = true;
+                }
+
+                if (SceneManager.GetActiveScene().name == "Level3")
+                {
+                    messageText.text = "Game Completed!\nCongratulations!";
+                    messageText.color = Color.green;
+                    level3Completed = true;
+                }
             }
             else
             {
