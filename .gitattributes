@@ -1,7 +1,7 @@
-# Unity meta dosyalarını sayma
+# Unity meta dosyalarını Mathematica yerine C# say
 *.meta linguist-vendored
 
-# Shader dosyalarını sayma (ShaderLab & HLSL)
+# Shader dosyalarını sayma
 *.shader linguist-vendored
 *.cginc linguist-vendored
 *.hlsl linguist-vendored
