@@ -1,0 +1,21 @@
+# Unity meta dosyalarını sayma
+*.meta linguist-vendored
+
+# Shader dosyalarını sayma (ShaderLab & HLSL)
+*.shader linguist-vendored
+*.cginc linguist-vendored
+*.hlsl linguist-vendored
+
+# Unity otomatik ayar dosyaları
+ProjectSettings/* linguist-vendored
+Packages/* linguist-vendored
+
+# Binary ve büyük dosyaları sayma
+*.dll linguist-vendored
+*.exe linguist-vendored
+*.fbx linguist-vendored
+*.obj linguist-vendored
+*.png linguist-vendored
+*.jpg linguist-vendored
+*.tga linguist-vendored
+*.psd linguist-vendored
