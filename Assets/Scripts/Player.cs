@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
             {
                 Time.timeScale = 1f;
                 SceneManager.LoadScene("Level2");
+                FindAnyObjectByType<BGMManager>().ResumeMusic();
             }
         }
 
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
             {
                 Time.timeScale = 1f;
                 SceneManager.LoadScene("Level3");
+                FindAnyObjectByType<BGMManager>().ResumeMusic();
             }
         }
 
@@ -113,6 +115,9 @@ public class Player : MonoBehaviour
                 messageText.text = "Level Completed!\nPress Space to continue.";
                 messageText.color = Color.green;
 
+                // MÜZİĞİ DURDUR
+                FindAnyObjectByType<BGMManager>().PauseMusic();
+
                 if (SceneManager.GetActiveScene().name == "Level1")
                     level1Completed = true;
                 if (SceneManager.GetActiveScene().name == "Level2")
@@ -121,22 +126,30 @@ public class Player : MonoBehaviour
                 {
                     messageText.text = "Game Completed!\nreturn to menu";
                     level3Completed = true;
+
+                    // Oyun bitince tamamen durdur
+                    FindAnyObjectByType<BGMManager>().StopMusic();
                 }
             }
             else
             {
                 messageText.text = "You Failed!\nPress Space to retry.";
                 messageText.color = Color.red;
-                levelFailed = true; 
+                levelFailed = true;
+
+                // Kaybettiğinde de müziği durdur
+                FindAnyObjectByType<BGMManager>().PauseMusic();
             }
 
             messageText.gameObject.SetActive(true);
             winSound.Play();
-            BGMSound.Stop();
+
             Time.timeScale = 0f;
         }
 
+
     }
+
 
 
     public TextMeshProUGUI pointText;
