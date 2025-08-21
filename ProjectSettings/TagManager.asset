@@ -9,6 +9,8 @@ TagManager:
   - MessageText
   - Food
   - PointPopUp
+  - Button1
+  - MainMenu
   layers:
   - Default
   - TransparentFX

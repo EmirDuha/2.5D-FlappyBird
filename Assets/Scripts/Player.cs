@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private bool level1Completed = false;
     private bool level2Completed = false;
     private bool level3Completed = false;
+    private bool levelFailed = false;
 
     void Start()
     {
@@ -26,10 +27,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Yön tuşlarını sürekli oku
         horizontalInput = Input.GetAxis("Horizontal");
 
-        // Space tuşuna basılırsa zıplat
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
@@ -53,7 +52,24 @@ public class Player : MonoBehaviour
                 SceneManager.LoadScene("Level3");
             }
         }
+
+        if (SceneManager.GetActiveScene().name == "Level3")
+        {
+            if (level3Completed && Input.GetKeyDown(KeyCode.Space))
+            {
+                Time.timeScale = 1f;
+                // Burada yeni level varsa aç, yoksa MainMenu’ye dön
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+
+        if (levelFailed && Input.GetKeyDown(KeyCode.Space))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
+
 
     void FixedUpdate()
     {
@@ -90,54 +106,45 @@ public class Player : MonoBehaviour
             point = 0;
         }
 
-
-
         else if (collision.gameObject.CompareTag("Finish"))
         {
-
             if (point == 100)
             {
+                messageText.text = "Level Completed!\nPress Space to continue.";
+                messageText.color = Color.green;
+
                 if (SceneManager.GetActiveScene().name == "Level1")
-                {
-                    messageText.text = "Level Completed!\nPress Space to continue.";
-                    messageText.color = Color.green;
                     level1Completed = true;
-                }
-
                 if (SceneManager.GetActiveScene().name == "Level2")
-                {
-                    messageText.text = "Level Completed!\nPress Space to continue.";
-                    messageText.color = Color.green;
                     level2Completed = true;
-                }
-
                 if (SceneManager.GetActiveScene().name == "Level3")
                 {
-                    messageText.text = "Game Completed!\nCongratulations!";
-                    messageText.color = Color.green;
+                    messageText.text = "Game Completed!\nreturn to menu";
                     level3Completed = true;
                 }
             }
             else
             {
-                messageText.text = "You Failed!";
+                messageText.text = "You Failed!\nPress Space to retry.";
                 messageText.color = Color.red;
+                levelFailed = true; 
             }
+
             messageText.gameObject.SetActive(true);
             winSound.Play();
             BGMSound.Stop();
             Time.timeScale = 0f;
         }
+
     }
+
 
     public TextMeshProUGUI pointText;
     public void ShowPopup(string text)
     {
-        // TMP Text nesnesinin içeriğini değiştir
         pointText.text = text;
         pointText.gameObject.SetActive(true);
 
-        // 1 saniye sonra gizle
         CancelInvoke(nameof(HidePopup));
         Invoke(nameof(HidePopup), 1f);
     }
